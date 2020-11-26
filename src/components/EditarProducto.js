@@ -1,4 +1,34 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { editarProductoAction } from "../actions/productoActions";
+import { useForm } from "../hooks/useForm";
+
 export const EditarProducto = () => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  const [producto, formOnChange, , guardarProducto] = useForm({
+    nombre: "",
+    precio: "",
+  });
+
+  //Producto a editar
+  const productoEditar = useSelector((state) => state.productos.productoEditar);
+
+  useEffect(() => {
+    guardarProducto(productoEditar);
+  }, [productoEditar]);
+
+  if (!productoEditar) return null;
+  const { nombre, precio } = productoEditar;
+
+  const submitEditarProducto = (e) => {
+    e.preventDefault();
+    dispatch(editarProductoAction(producto));
+    history.push("/");
+  };
+
   return (
     <div className="row justify-content-center">
       <div className="col-md-8">
@@ -6,15 +36,17 @@ export const EditarProducto = () => {
           <div className="card-body">
             <h2 className="text-center mb-4">Editar Producto</h2>
 
-            <form>
+            <form onSubmit={submitEditarProducto}>
               <div className="form-group">
-                <label className="form-label">Nombre:</label>
+                <label>Nombre:</label>
                 <input
                   type="text"
                   className="form-control"
                   placeholder="Nombre Producto"
                   name="nombre"
                   autoComplete="off"
+                  defaultValue={nombre}
+                  onChange={formOnChange}
                 />
               </div>
               <div className="form-group">
@@ -25,6 +57,8 @@ export const EditarProducto = () => {
                   placeholder="Precio Producto"
                   name="precio"
                   autoComplete="off"
+                  defaultValue={precio}
+                  onChange={formOnChange}
                 />
               </div>
 

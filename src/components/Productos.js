@@ -9,7 +9,8 @@ export const Productos = () => {
   useEffect(() => {
     // Consultar la api
     dispatch(obtenerProductosAction());
-  }, [dispatch]);
+    // eslint-disable-next-line
+  }, []);
 
   // Obtener el state
   const productos = useSelector((state) => state.productos.productos);

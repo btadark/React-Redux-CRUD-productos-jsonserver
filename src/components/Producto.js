@@ -1,12 +1,17 @@
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { borrarProductoAction } from "../actions/productoActions";
+import {
+  borrarProductoAction,
+  obtenerProductoEditar,
+} from "../actions/productoActions";
 import Swal from "sweetalert2";
 
 export const Producto = ({ producto }) => {
   const { nombre, precio, id } = producto;
 
   const dispatch = useDispatch();
+
+  const history = useHistory();
 
   // Confirmar si desea Eliminar
   const confirmarEliminarProducto = (id) => {
@@ -28,6 +33,13 @@ export const Producto = ({ producto }) => {
     });
   };
 
+  // Funcion que redirige de manera programada
+
+  const redireccionarEdicion = (producto) => {
+    dispatch(obtenerProductoEditar(producto));
+    history.push(`productos/editar/${producto.id}`);
+  };
+
   return (
     <tr>
       <td>{nombre}</td>
@@ -35,9 +47,13 @@ export const Producto = ({ producto }) => {
         <span className="font-weight-bold"> $ {precio}</span>
       </td>
       <td className="acciones">
-        <Link to={`productos/editar/${id}`} className="btn btn-primary mr-2">
+        <button
+          type="button"
+          className="btn btn-primary mr-2"
+          onClick={() => redireccionarEdicion(producto)}
+        >
           Editar
-        </Link>
+        </button>
         <button
           type="button"
           className="btn btn-danger"

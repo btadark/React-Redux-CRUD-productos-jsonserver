@@ -1,29 +1,29 @@
 {
   "productos": [
     {
-      "id": 2,
-      "nombre": "Jugo de Naranja",
-      "precio": "1"
-    },
-    {
       "nombre": "Jugo de Sandia",
-      "precio": "60",
+      "precio": "80",
       "id": 3
     },
     {
       "nombre": "Jugo de Coco",
-      "precio": "50",
+      "precio": "90",
       "id": 4
     },
     {
-      "nombre": "Jugo de Pera",
-      "precio": "90",
+      "nombre": "Pan Italiano",
+      "precio": "150",
       "id": 5
     },
     {
-      "nombre": "Pan Americano",
-      "precio": "80",
+      "nombre": "Te con Cafe",
+      "precio": "60",
       "id": 6
+    },
+    {
+      "nombre": "Data",
+      "precio": "60",
+      "id": 7
     }
   ]
 }

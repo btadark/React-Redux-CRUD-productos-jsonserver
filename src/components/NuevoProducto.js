@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { crearNuevoProductoAction } from "../actions/productoActions";
+import { mostrarAlerta, ocultarAlertaAction } from "../actions/alertaActions";
 import { useForm } from "../hooks/useForm";
 
 export const NuevoProducto = ({ history }) => {
@@ -16,6 +17,7 @@ export const NuevoProducto = ({ history }) => {
   // Acceder al state del store
   const cargando = useSelector((state) => state.productos.loading);
   const error = useSelector((state) => state.productos.error);
+  const alerta = useSelector((state) => state.alerta.alerta);
 
   // const agregarProducto = () => dispatch(crearNuevoProductoAction);
 
@@ -24,10 +26,18 @@ export const NuevoProducto = ({ history }) => {
 
     // Validar Formulario
     if (nombre.trim() === "" || precio <= 0) {
+      const alerta = {
+        msg: "Ambos campos son obligatorios",
+        classes: "alert alert-danger text-center text-uppercase p3",
+      };
+
+      dispatch(mostrarAlerta(alerta));
       return;
     }
 
     // Si no hay Errores
+    dispatch(ocultarAlertaAction());
+
     // agregar producto
     dispatch(crearNuevoProductoAction({ nombre, precio }));
     history.push("/");
@@ -41,6 +51,7 @@ export const NuevoProducto = ({ history }) => {
           <div className="card-body">
             <h2 className="text-center mb-4">Agregar Nuevo Producto</h2>
 
+            {alerta && <p className={alerta.classes}>{alerta.msg}</p>}
             <form onSubmit={submitNuevoProducto}>
               <div className="form-group">
                 <label className="form-label">Nombre:</label>
@@ -76,11 +87,11 @@ export const NuevoProducto = ({ history }) => {
             </form>
 
             {cargando && <p>Cargando...</p>}
-            {/* {error && (
+            {error(
               <p className="alert alert-danger p2 text-center mt-4">
                 Hubo un error
               </p>
-            )} */}
+            )}
           </div>
         </div>
       </div>
