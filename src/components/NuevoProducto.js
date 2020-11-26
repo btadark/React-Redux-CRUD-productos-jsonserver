@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { crearNuevoProductoAction } from "../actions/productoActions";
 import { useForm } from "../hooks/useForm";
 
-export const NuevoProducto = () => {
+export const NuevoProducto = ({ history }) => {
   const [state, formOnChange, reset] = useForm({
     nombre: "",
     precio: 0,
@@ -10,7 +10,12 @@ export const NuevoProducto = () => {
 
   const { nombre, precio } = state;
 
+  // utilizar use dispatch y te crea una funcio
   const dispatch = useDispatch();
+
+  // Acceder al state del store
+  const cargando = useSelector((state) => state.productos.loading);
+  const error = useSelector((state) => state.productos.error);
 
   // const agregarProducto = () => dispatch(crearNuevoProductoAction);
 
@@ -18,17 +23,14 @@ export const NuevoProducto = () => {
     e.preventDefault();
 
     // Validar Formulario
-    const precioProducto = Number(precio);
-
-    if (nombre.trim() === "" || precioProducto <= 0) {
+    if (nombre.trim() === "" || precio <= 0) {
       return;
     }
 
     // Si no hay Errores
-
     // agregar producto
-    dispatch(crearNuevoProductoAction({ nombre, precioProducto }));
-
+    dispatch(crearNuevoProductoAction({ nombre, precio }));
+    history.push("/");
     reset();
   };
 
@@ -72,6 +74,13 @@ export const NuevoProducto = () => {
                 Agregar
               </button>
             </form>
+
+            {cargando && <p>Cargando...</p>}
+            {/* {error && (
+              <p className="alert alert-danger p2 text-center mt-4">
+                Hubo un error
+              </p>
+            )} */}
           </div>
         </div>
       </div>
